@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ASHEN VALE — A rogue-lite descent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Marcellus+SC&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="game-shell">
+  <header class="topbar">
+    <div class="brand-mark"><span class="brand-sigil">✦</span><div><div class="brand-title">ASHEN <b>VALE</b></div><div class="brand-sub">THE SUNDERED DESCENT</div></div></div>
+    <div class="run-stats"><span class="run-label">RUN <b id="run-number">01</b></span><i></i><span id="floor-label">FLOOR I · THE HOLLOW</span></div>
+    <div class="top-right"><span class="online-dot"></span><span>SOLO DESCENT</span><button class="icon-btn" id="sound-btn" title="Toggle sound">♫</button><button class="icon-btn" id="pause-btn" title="Pause">Ⅱ</button></div>
+  </header>
+  <main class="layout">
+    <section class="main-column">
+      <div class="hero-bar">
+        <div class="portrait"><span>✦</span><small>R</small></div>
+        <div class="hero-meta"><div class="hero-name">THE WAYFARER <span class="class-tag">ROGUE</span></div><div class="hero-level">LEVEL <b id="level">01</b> <span class="xp-text">· <span id="xp-label">0 / 30</span> XP</span></div><div class="xp-track"><div id="xp-fill"></div></div></div>
+        <div class="vitals"><div class="vital-line"><span class="vital-icon heart">♥</span><span class="vital-label">VITALITY</span><b id="hp-text">100 / 100</b></div><div class="bar hp"><div id="hp-fill"></div></div><div class="vital-line mana-line"><span class="vital-icon mana-icon">◆</span><span class="vital-label">FOCUS</span><b id="mana-text">60 / 60</b></div><div class="bar mana"><div id="mana-fill"></div></div></div>
+      </div>
+      <div class="arena-wrap">
+        <canvas id="game" width="960" height="580" aria-label="Ashen Vale dungeon game"></canvas>
+        <div class="arena-vignette"></div>
+        <div class="objective"><span class="objective-mark">◆</span><div><b id="objective-title">THE HOLLOW</b><small id="objective-sub">Slay the restless dead</small></div></div>
+        <div class="wave-pill"><span class="wave-dot"></span><span id="wave-label">WAVE 1 / 4</span></div>
+        <div class="toast" id="toast"></div>
+        <div class="pickup-hint" id="pickup-hint">[ E ] PICK UP</div>
+        <div class="map-box"><canvas id="minimap" width="116" height="80"></canvas><span>THE HOLLOW</span></div>
+        <div class="start-screen" id="start-screen">
+          <div class="start-kicker">A ROGUE-LITE DESCENT</div><div class="start-title">ASHEN<br><em>VALE</em></div><div class="start-rule"><span></span>✦<span></span></div>
+          <p>Beyond the last dying lantern, the dead still remember your name.</p>
+          <button class="start-button" id="start-btn">DESCEND INTO THE HOLLOW <span>→</span></button>
+          <div class="start-controls">WASD MOVE <i>·</i> CLICK ATTACK <i>·</i> SHIFT DASH</div>
+        </div>
+        <div class="pause-screen hidden" id="pause-screen"><div class="pause-title">DESCENT PAUSED</div><p>The hollow waits.</p><button class="start-button" id="resume-btn">RETURN TO THE VALE <span>→</span></button></div>
+        <div class="levelup-screen hidden" id="levelup-screen"><div class="upgrade-kicker">A MOMENT OF CLARITY</div><h2>YOUR SOUL DEEPENS</h2><p>Choose a boon for the road ahead</p><div class="upgrade-cards" id="upgrade-cards"></div></div>
+        <div class="end-screen hidden" id="end-screen"><div class="upgrade-kicker" id="end-kicker">THE DESCENT ENDS</div><h2 id="end-title">THE HOLLOW CLAIMS ANOTHER</h2><p id="end-copy">The Vale remembers the fallen.</p><button class="start-button" id="restart-btn">BEGIN ANOTHER DESCENT <span>↻</span></button></div>
+      </div>
+      <div class="action-bar">
+        <div class="combat-tip"><span class="tip-key">LMB</span><span>Throw knife</span><span class="tip-divider">/</span><span class="tip-key">SHIFT</span><span>Shadowstep</span></div>
+        <div class="skills"><div class="skill-slot"><span class="keycap">LMB</span><span class="skill-symbol knife">⌁</span></div><div class="skill-slot"><span class="keycap">SPACE</span><span class="skill-symbol spin">✳</span><span class="skill-count" id="spin-status">READY</span></div><div class="skill-slot"><span class="keycap">SHIFT</span><span class="skill-symbol dash">➤</span></div><div class="skill-slot potion-slot"><span class="keycap">Q</span><span class="skill-symbol potion">♜</span><span class="skill-count" id="potion-count">2</span></div></div>
+        <div class="kills"><span class="kills-icon">☠</span><span><b id="kill-count">0</b><small>FALLEN</small></span></div>
+      </div>
+    </section>
+    <aside class="side-column">
+      <section class="side-card objective-card"><div class="card-heading"><span>DESCENT LOG</span><span class="heading-mark">✦</span></div><div class="current-quest"><div class="quest-icon">⚔</div><div><div class="quest-title" id="quest-title">A QUIET HOLLOW</div><div class="quest-copy" id="quest-copy">Clear the restless dead. Something stirs below.</div></div></div><div class="quest-progress"><div class="quest-progress-label"><span>REMAINS</span><b id="remain-count">0 / 8</b></div><div class="quest-track"><div id="quest-fill"></div></div></div><div class="log-divider"></div><div class="log-line"><span class="log-dot gold"></span><span id="log-text">The torches still burn...</span></div></section>
+      <section class="side-card inventory-card"><div class="card-heading"><span>RELICS &amp; WARES</span><span class="inventory-count" id="relic-count">0 / 4</span></div><div class="relic-slots" id="relic-slots"><div class="empty-relic"><span>＋</span><small>EMPTY</small></div><div class="empty-relic"><span>＋</span><small>EMPTY</small></div><div class="empty-relic"><span>＋</span><small>EMPTY</small></div><div class="empty-relic"><span>＋</span><small>EMPTY</small></div></div><div class="equipped-item"><div class="item-art">⌁</div><div><small>WIELDED</small><b id="weapon-name">Wayfarer's Edge</b><span id="weapon-stat">+8 knife damage</span></div><span class="rarity-dot"></span></div></section>
+      <section class="side-card run-card"><div class="card-heading"><span>THIS DESCENT</span><span class="depth-mark">⌄</span></div><div class="run-row"><span>Depth reached</span><b id="depth-stat">01</b></div><div class="run-row"><span>Time elapsed</span><b id="time-stat">00:00</b></div><div class="run-row"><span>Gold gathered</span><b class="gold-value"><span>◈</span> <span id="gold-stat">0</span></b></div><div class="run-row"><span>Critical chance</span><b id="crit-stat">8%</b></div></section>
+      <div class="whisper"><span>“</span><p>The dark does not hate you.<br>It simply has room for one more.</p><small>— THE LAST LAMPLIGHTER</small></div>
+    </aside>
+  </main>
+  <footer><span>ASHEN VALE <i>·</i> A DESCENT INTO THE SUNDERED</span><span>NO LIGHT WITHOUT A LITTLE DARKNESS</span></footer>
+</div>
+<script src="game.js"></script>
+</body></html>
